@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template.xhtml"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xml:lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="menus">
+        <h:form id="formExcluir">
+            <h:outputLabel value="Agenda de Compromissos - Cadastrar Compromisso" style="font-size: 30px; font-family: verdana;" />
+            
+            <!-- Painel Principal -->
+            <p:panel id="panelCompromissos" rendered="#{not excluirCompromissoBean.flags.search}">
+            
+            	<!--Painel da Chave-->
+                <p:outputPanel id="chaveCompromissos" >
+                    <p:focus for="chavesNome" rendered="#{excluirCompromissoBean.flags.key}"/>
+					
+                    <h:panelGrid columns="7" style="margin-top: 0px;">
+                   	
+                        <h:outputLabel value="Nome:" for="keyNome" />
+                        <p:inputText id="keyNome" value="#{excluirCompromissoBean.compromisso.nome}" title="Nome" size="100" />
+                        <p:message id="messageCompromissosNomeKey" for="keyNome" />
+                        
+                        <p:commandButton id="processar" title="Processar" icon="ui-icon-arrowthick-1-e" type="submit" 
+                                         process="keyNome" update="@form" rendered="#{excluirCompromissoBean.flags.key}"
+                                         style="width: 30px; height: 20px" />
+                    </h:panelGrid>
+                </p:outputPanel>
+			
+                <!--Painel dos Dados-->
+                <p:outputPanel id="dadosCompromissos" >
+                    <p:focus for="dadosNome" rendered="#{excluirCompromissoBean.flags.dados}"/>
+					
+                    <h:panelGrid columns="7" style="margin-top: 0px;">
+                    
+                    	<h:outputLabel value="Codigo:" for="dadosCodigo" />
+                        <p:inputText id="dadosCodigo" value="#{excluirCompromissoBean.compromisso.codigo}" title="Codigo" size="20"
+                                     readonly="true" />
+                        <p:message id="messageCompromissosCodigo" for="dadosCodigo" />
+						
+                        <h:outputLabel value="Nome:" for="dadosNome" />
+                        <p:inputText id="dadosNome" value="#{excluirCompromissoBean.compromisso.nome}" title="Nome" size="100"
+                                     readonly="true" />
+                        <p:message id="messageCompromissosNome" for="dadosNome" />
+                        
+                        <!---filler-->
+							
+                        <h:outputLabel value="Data:" for="dadosData" />
+                        <p:inputText id="dadosData" value="#{excluirCompromissoBean.compromisso.data}" size="10" title="Data" 
+                                     readonly="#{not reservarMesaBean.flags.key}" />
+                        <p:message id="messageCompromissosData" for="dadosData" />
+                        
+                        <h:outputLabel value="   "/>
+						
+                        <h:outputLabel value="Horário:" for="dadosHora" />
+                        <p:inputText id="dadosHora" value="#{excluirCompromissoBean.compromisso.horario}" size="5" title="Horário" 
+                                     readonly="#{not excluirCompromissoBean.flags.key}" />
+                        <p:message id="messageCompromissosHora" for="dadosHora" />
+                        
+                        <h:outputLabel value="   "/>
+                        
+                        <h:outputLabel value="Local:" for="locCompromisso" />
+                        <p:inputText id="locCompromisso" value="#{excluirCompromissoBean.compromisso.local}" title="Local" size="50"/>
+                        <p:message id="locCompromissoMessage" for="locCompromisso" />
+                        
+                        <h:outputLabel value="Descrição:" for="descrCompromisso" />
+                        <p:inputText id="descrCompromisso" value="#{excluirCompromissoBean.compromisso.descricao}" title="Descrição" size="200"/>
+                        <p:message id="descrCompromissoMessage" for="descrCompromisso" />
+						
+                        <p:commandButton id="processar" title="Processar" icon="ui-icon-arrowthick-1-e" type="submit" 
+                                         process="dadosCompromissos" update="@form" rendered="#{excluirCompromissoBean.flags.key}"
+                                         style="width: 30px; height: 20px" />
+                    </h:panelGrid>
+                </p:outputPanel>
+      			
+            <!-- Botões de Controle -->
+            <h:panelGrid columns="3" id="controle">
+                <h:panelGrid columns="5">
+                    <p:commandButton id="botaoMenu" value="Menu" type="submit" immediate="true" ajax="false"
+                                     rendered="#{excluirCompromissoBean.flags.botaoMenu}" action="/index.xhtml"/>
+                    <p:commandButton id="botaoVoltar" value="Voltar" type="submit" immediate="true" ajax="false" process="@this" 
+                                     rendered="#{excluirCompromissoBean.flags.botaoVoltar}" action="#{excluirCompromissoBean.novaEntidade()}"/>
+                    <p:commandButton  id="botaoExcluir" value="Excluir" type="submit" update="@form, :idMessages" process="@this"
+                                      rendered="#{excluirCompromissoBean.flags.botaoExcluir}" onclick="dlgExcluir.show()"/>
+                </h:panelGrid>
+                <p:ajaxStatus >
+                    <f:facet name="start">                                    
+                        <h:graphicImage value="/images/loading.gif" />  
+                        <h:outputText value=" Processando..."/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText/>
+                    </f:facet>
+                </p:ajaxStatus>
+            </h:panelGrid>
+            </p:panel>
+        </h:form>
+        
+        <h:form>
+            <p:confirmDialog widgetVar="painelExcluir" message="Confirma a exclusão do Compromisso?"
+                             closable="false" header="Exclusão de Compromisso" severity="alert">
+                <p:panelGrid columns="2">
+                    <p:commandButton value="Sim" update=":formExcluir" oncomplete="painelExcluir.hide()"  
+                                     actionListener="#{excluirCompromissoBean.delete}" />  
+                    <p:commandButton value="Não" update=":formExcluir" onclick="painelExcluir.hide()" type="button" />
+                </p:panelGrid>
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+            
+    <ui:define name="messages">
+        <p:messages id="idMessages"/>
+    </ui:define>
+</ui:composition>
