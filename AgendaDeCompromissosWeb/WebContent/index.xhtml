@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <!-- Framework JSF -->
+    <h:head>
+        <title>Agenda de Compromissos</title>
+    </h:head>
+
+    <h:body>
+        <h:form id="formMenus">
+            <h:outputLabel value="Agenda de Compromissos" style="font-size: 30px; font-family: verdana;" />
+
+            <h:panelGrid columns="2" >
+                <h:commandButton id="botaoMenus1" value="Cadastrar Compromisso" style="min-width: 230px;" 
+                                 action="/menus/cadastrarCompromisso.xhtml"/>
+
+                <h:commandButton id="botaoMenus2" value="Excluir Compromisso" style="min-width: 230px;"
+                                 action="/menus/excluirCompromisso.xhtml"/>
+
+                <h:commandButton id="botaoMenus3" value="Editar Compromisso" style="min-width: 230px;"
+                                 action="/menus/editarCompromisso.xhtml"/>
+
+                <h:commandButton id="botaoMenus4" value="Listar Compromissos" style="min-width: 230px;"
+                                 action="/menus/listarCompromissos.xhtml"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>

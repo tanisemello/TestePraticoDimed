@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template.xhtml"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xml:lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="menus">
+        <h:form id="formListar">
+            <h:outputLabel value="Agenda de Compromissos - Listar Compromisso" style="font-size: 30px; font-family: verdana;" />
+            
+            <!-- Painel Principal -->
+            <p:panel id="panelCompromissos" rendered="#{not listarCompromissoBean.flags.search}">
+			
+                <!--Painel da Chave-->
+                <p:outputPanel id="chaveCompromissos" >
+                    <p:focus for="chavesNome" rendered="#{listarCompromissoBean.flags.key}"/>
+					
+                    <h:panelGrid columns="7" style="margin-top: 0px;">
+                   	
+                        <h:outputLabel value="Nome:" for="keyNome" />
+                        <p:inputText id="keyNome" value="#{listarCompromissoBean.compromisso.nome}" title="Nome" size="100" />
+                        <p:message id="messageCompromissosNomeKey" for="keyNome" />
+                        
+                        <p:commandButton id="processar" title="Processar" icon="ui-icon-arrowthick-1-e" type="submit" 
+                                         process="keyNome" update="@form" rendered="#{listarCompromissoBean.flags.key}"
+                                         style="width: 30px; height: 20px" />
+                    </h:panelGrid>
+                </p:outputPanel>
+                
+                <!--Painel dos Dados-->
+                <p:outputPanel id="tabelaCompromissos" >
+	                   <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,20,50,100"
+	                             value="#{listarCompromissoBean.listRegisters}" var="listarCompromisso"
+	                             emptyMessage="Nenhum Compromisso Cadastrado." widgetVar="ListaTable"
+	                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                             pageLinks="30">
+	                    <p:column>
+	                        <f:facet name="header">
+	                            Código
+	                        </f:facet>
+	                        <h:outputText value="#{listarCompromissoBean.compromisso.codigo}" size="20" readonly="true" />
+	                    </p:column>
+
+	                    <p:column>
+	                        <f:facet name="header">
+	                            Nome
+	                        </f:facet>
+	                        <h:outputText value="#{listarCompromissoBean.compromisso.nome}" size="100" readonly="true" />
+	                    </p:column>
+	          
+	                    <p:column>
+	                        <f:facet name="header">
+	                            Data
+	                        </f:facet>
+	                        <h:outputText value="#{listarCompromissoBean.compromisso.data}" size="10" readonly="true" />
+	                    </p:column>
+
+	                    <p:column>
+	                        <f:facet name="header">
+	                            Horário
+	                        </f:facet>
+	                        <h:outputText value="#{listarCompromissoBean.compromisso.horario}" size="5" readonly="true" />
+	                    </p:column>
+	                    
+	                    <p:column>
+	                        <f:facet name="header">
+	                            Local
+	                        </f:facet>
+	                        <h:outputText value="#{listarCompromissoBean.compromisso.local}" size="50" readonly="true" />
+	                    </p:column>
+
+	                    <p:column>
+	                        <f:facet name="header">
+	                            Descrição
+	                        </f:facet>
+	                        <h:outputText value="#{listarCompromissoBean.compromisso.descricao}" size="200" readonly="true" />
+	                    </p:column>
+                	</p:dataTable>
+                </h:panelGrid>
+			</p:outputPanel>
+            	
+            <!-- Botões de Controle -->
+            <h:panelGrid columns="3" id="controle">
+                <h:panelGrid columns="2">
+                    <p:commandButton id="botaoMenu" value="Menu" type="submit" immediate="true" ajax="false"
+                                     rendered="#{listarCompromissoBean.flags.botaoMenu}" action="/index.xhtml"/>
+                    <p:commandButton id="botaoVoltar" value="Voltar" type="submit" immediate="true" ajax="false" process="@this" 
+                                     rendered="#{listarCompromissoBean.flags.botaoVoltar}" action="#{listarCompromissoBean.novaEntidade()}"/>
+                </h:panelGrid>
+                <p:ajaxStatus >
+                    <f:facet name="start">                                    
+                        <h:graphicImage value="/images/loading.gif" />  
+                        <h:outputText value=" Processando..."/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText/>
+                    </f:facet>
+                </p:ajaxStatus>
+            </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+            
+    <ui:define name="messages">
+        <p:messages id="idMessages"/>
+    </ui:define>
+</ui:composition>
